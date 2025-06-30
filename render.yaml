@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ctc-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://krsubam4u:KfZV9nNAlgBDPp9v@user-data.ffdio.mongodb.net/ctc
+      - key: MANAGER_EMAIL
+        value: "krsubam4u@gmail.com"
+      - key: MANAGER_EMAIL_PASS
+        value: askrusnhsspaaoiv
