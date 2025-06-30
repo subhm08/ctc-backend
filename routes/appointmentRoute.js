@@ -6,14 +6,25 @@ const sendEmail = require('../utils/sendEmail');
 module.exports = (io) => {
   // Create appointment
   router.post('/', async (req, res) => {
-    const data = await Appointment.create(req.body);
-    io.emit('new-appointment', data);
-    const message = appointmentEmail(data);
-
-  await sendEmail("krsubam4u@gmail.com", 'New Appointment Booked', message);
-
-    res.status(201).json(data);
+    try {
+      const data = await Appointment.create(req.body);
+  
+      io.emit('new-appointment', data);
+  
+      const message = appointmentEmail(data);
+      await sendEmail("krsubam4u@gmail.com", 'New Appointment Booked', message);
+  
+      res.status(201).json(data);
+  
+    } catch (error) {
+      console.error("💥 Appointment Booking Error:", error.message, error);
+  
+      res.status(500).json({
+        message: error.message || 'Internal Server Error',
+      });
+    }
   });
+  
 
   // Get all appointments
   router.get('/', async (req, res) => {
