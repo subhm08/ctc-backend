@@ -10,7 +10,7 @@ module.exports = (io) => {
     io.emit('new-appointment', data);
     const message = appointmentEmail(data);
 
-  await sendEmail("care2curephysiotherapy71@gmail.com", 'New Appointment Booked', message);
+  await sendEmail("krsubam4u@gmail.com", 'New Appointment Booked', message);
 
     res.status(201).json(data);
   });
