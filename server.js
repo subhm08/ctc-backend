@@ -9,7 +9,10 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' }
+  cors: { origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', "x-api-key"],
+   }
 });
 
 mongoose.connect(process.env.MONGODB_URI)
