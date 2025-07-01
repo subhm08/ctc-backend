@@ -3,6 +3,8 @@ const router = express.Router();
 const Appointment = require('../schema/appointmentSchema');
 const appointmentEmail = require('../utils/appointmentRecivedTamplate')
 const sendEmail = require('../utils/sendEmail');
+const apiKeyMiddleware = require('../utils/apiKeyMiddleware')
+
 module.exports = (io) => {
   // Create appointment
   router.post('/', async (req, res) => {
@@ -27,7 +29,7 @@ module.exports = (io) => {
   
 
   // Get all appointments
-  router.get('/', async (req, res) => {
+  router.get('/', apiKeyMiddleware,  async (req, res) => {
     const all = await Appointment.find().sort({ createdAt: -1 });
     res.json(all);
   });
