@@ -36,35 +36,47 @@ module.exports = (io) => {
   });
 
   // Get all appointments with filtering
-  router.get('/', apiKeyMiddleware, async (req, res) => {
-    try {
-      const { status, bookedOn, appointmentDate } = req.query;
+  // routes/appointments.routes.js
+router.get('/', apiKeyMiddleware, async (req, res) => {
+  try {
+    const { status, bookedOn, appointmentDate, sort, order } = req.query;
 
-      const filters = {};
+    const filters = {};
 
-      if (status) filters.status = status;
-      if (bookedOn) {
-        const date = formatDateOnly(bookedOn);
-        filters.createdAt = {
-          $gte: new Date(`${date}T00:00:00.000Z`),
-          $lte: new Date(`${date}T23:59:59.999Z`)
-        };
-      }
-      if (appointmentDate) {
-        const date = formatDateOnly(appointmentDate);
-        filters.preferredDate = {
-          $gte: new Date(`${date}T00:00:00.000Z`),
-          $lte: new Date(`${date}T23:59:59.999Z`)
-        };
-      }
+    // Filter by status
+    if (status) filters.status = status;
 
-      const all = await Appointment.find(filters).sort({ createdAt: -1 });
-      res.json(all);
-    } catch (err) {
-      console.error('❌ Failed to fetch appointments:', err);
-      res.status(500).json({ message: 'Failed to load appointments' });
+    // Filter by booking date (createdAt)
+    if (bookedOn) {
+      const date = new Date(bookedOn);
+      filters.createdAt = {
+        $gte: new Date(date.setHours(0, 0, 0, 0)),
+        $lte: new Date(date.setHours(23, 59, 59, 999))
+      };
     }
-  });
+
+    // Filter by preferred appointment date
+    if (appointmentDate) {
+      const date = new Date(appointmentDate);
+      filters.preferredDate = {
+        $gte: new Date(date.setHours(0, 0, 0, 0)),
+        $lte: new Date(date.setHours(23, 59, 59, 999))
+      };
+    }
+
+    // Dynamic sorting
+    const sortField = sort === 'bookingDate' ? 'createdAt' : sort === 'appointmentDate' ? 'preferredDate' : 'createdAt';
+    const sortOrder = order === 'asc' ? 1 : -1;
+
+    const appointments = await Appointment.find(filters).sort({ [sortField]: sortOrder });
+
+    res.json(appointments);
+  } catch (err) {
+    console.error('❌ Failed to fetch appointments:', err);
+    res.status(500).json({ message: 'Failed to load appointments' });
+  }
+});
+
 
   // Update appointment status
   router.patch('/:id', apiKeyMiddleware, async (req, res) => {
