@@ -39,12 +39,21 @@ module.exports = (io) => {
   // routes/appointments.routes.js
 router.get('/', apiKeyMiddleware, async (req, res) => {
   try {
-    const { status, bookedOn, appointmentDate, sort, order } = req.query;
+    const {search, status, bookedOn, appointmentDate, sort, order } = req.query;
 
     const filters = {};
 
     // Filter by status
     if (status) filters.status = status;
+
+    if (search) {
+      const regex = new RegExp(search, 'i'); // case-insensitive
+      filters.$or = [
+        { name: regex },
+        { email: regex },
+        { phone: regex }
+      ];
+    }
 
     // Filter by booking date (createdAt)
     if (bookedOn) {
