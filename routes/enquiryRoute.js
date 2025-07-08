@@ -13,7 +13,7 @@ module.exports = (io) => {
       io.emit('new Enquiry received', data);
 
       const message = enquiryEmail(data);
-      await sendEmail("krsubam4u@gmail.com", "New Enquiry Received", message);
+    //   await sendEmail("krsubam4u@gmail.com", "New Enquiry Received", message);
 
       res.status(201).json({ message: 'Enquiry created successfully' });
     } catch (err) {
