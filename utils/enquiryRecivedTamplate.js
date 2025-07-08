@@ -11,8 +11,8 @@ module.exports = (enquiry) => {
             <p><strong>👤 Name:</strong> ${enquiry.name}</p>
             <p><strong>📞 Phone:</strong><a href="tel:${enquiry.phone}"> ${enquiry.phone} </a></p>
             ${
-              appointment.message
-                ? `<p><strong>📝 Message:</strong> ${appointment.message}</p>`
+              enquiry.message
+                ? `<p><strong>📝 Message:</strong> ${enquiry.message}</p>`
                 : ''
             }
             <hr/>
