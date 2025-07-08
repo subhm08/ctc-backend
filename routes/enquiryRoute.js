@@ -9,11 +9,15 @@ module.exports = (io) => {
   // Create a new enquiry
   router.post('/', async (req, res) => {
     try {
+      const {name, phone, message} = req.body
+      if(!name || !phone){
+        return res.status(400).json({message: "Name and Phone are required!"})
+      }
       const data = await Enquiry.create(req.body);
       io.emit('new Enquiry received', data);
 
-      const message = enquiryEmail(data);
-    //   await sendEmail("krsubam4u@gmail.com", "New Enquiry Received", message);
+      const mesage = enquiryEmail(data);
+      await sendEmail("krsubam4u@gmail.com", "New Enquiry Received", message);
 
       res.status(201).json({ message: 'Enquiry created successfully' });
     } catch (err) {

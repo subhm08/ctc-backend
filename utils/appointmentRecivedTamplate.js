@@ -25,7 +25,7 @@ module.exports = (appointment) => {
 
           </div>
           <div style="background-color: #f1f1f1; text-align: center; padding: 16px; font-size: 13px; color: #777;">
-            Manage your appointments on <a href = "c2c-physio-admin.vercel.app><strong>Care to Cure Physiotherapy</strong>.</a>
+            Manage your appointments on <a href = "c2c-physio-admin.vercel.app"><strong>Care to Cure Physiotherapy</strong>.</a>
           </div>
         </div>
       </div>
