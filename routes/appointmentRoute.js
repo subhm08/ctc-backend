@@ -1,5 +1,3 @@
-// routes/appointments.routes.js
-
 const express = require('express');
 const router = express.Router();
 const Appointment = require('../schema/appointmentSchema');
@@ -7,7 +5,6 @@ const appointmentEmail = require('../utils/appointmentRecivedTamplate');
 const sendEmail = require('../utils/sendEmail');
 const apiKeyMiddleware = require('../utils/apiKeyMiddleware');
 
-// Utils
 const formatDateOnly = (date) =>
   new Date(date).toISOString().split('T')[0];
 
@@ -20,14 +17,10 @@ module.exports = (io) => {
       if (!name || !phone || !email || !address || !gender || !preferredDate || !preferredTime || !selectedServices) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-
       const appointment = await Appointment.create(req.body);
-
-      io.emit('new-appointment', appointment); // Emit event to all connected clients
-
+      io.emit('new appointment booked', appointment);
       const message = appointmentEmail(appointment);
       await sendEmail('krsubam4u@gmail.com', 'New Appointment Booked', message);
-
       res.status(201).json(appointment);
     } catch (error) {
       console.error('💥 Appointment Booking Error:', error);
@@ -35,8 +28,6 @@ module.exports = (io) => {
     }
   });
 
-  // Get all appointments with filtering
-  // routes/appointments.routes.js
 router.get('/', apiKeyMiddleware, async (req, res) => {
   try {
     const {search, status, bookedOn, appointmentDate, sort, order } = req.query;

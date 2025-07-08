@@ -1,6 +1,6 @@
 module.exports = (appointment) => {
     const appointmentDate = new Date(appointment.preferredDate).toDateString();
-  
+    const bookingDate = new Date(appointment.createdAt).toDateString();
     return `
       <div style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding: 12px;">
         <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); overflow: hidden;">
@@ -20,9 +20,12 @@ module.exports = (appointment) => {
                 ? `<p><strong>📝 Message:</strong> ${appointment.message}</p>`
                 : ''
             }
+            <hr/>
+           <p style="text-align: center; color: #777;">Booked on: ${bookingDate}</p>
+
           </div>
           <div style="background-color: #f1f1f1; text-align: center; padding: 16px; font-size: 13px; color: #777;">
-            Manage your appointments on <strong>Care to Cure Physiotherapy</strong>.
+            Manage your appointments on <a href = "c2c-physio-admin.vercel.app><strong>Care to Cure Physiotherapy</strong>.</a>
           </div>
         </div>
       </div>

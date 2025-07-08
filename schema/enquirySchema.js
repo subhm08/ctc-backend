@@ -7,7 +7,7 @@ const enquirySchema = mongoose.Schema(
         message: {type: String, default: "I want to know more about this"},
         status: {
             type: String,
-            enum: ['Pending', 'Confirmed', 'Completed', 'Cancelled'],
+            enum: ['Pending',  'Completed'],
             default: 'Pending'
           },
           createdAt: {
