@@ -3,8 +3,7 @@ const router = express.Router();
 const Enquiry = require('../schema/enquirySchema');
 const enquiryEmail = require('../utils/enquiryRecivedTamplate');
 const sendEmail = require('../utils/sendEmail');
-const apiKeyMiddleware = require('../utils/apiKeyMiddleware');
-
+const authMiddleware = require('../utils/authMiddleware')
 module.exports = (io) => {
   // Create a new enquiry
   router.post('/', async (req, res) => {
@@ -27,7 +26,7 @@ module.exports = (io) => {
   });
 
   // Get all enquiries with filters (status + sort)
-  router.get('/', apiKeyMiddleware, async (req, res) => {
+  router.get('/', authMiddleware, async (req, res) => {
     try {
       const { sort = 'newest', status } = req.query;
 
@@ -47,7 +46,7 @@ module.exports = (io) => {
   });
 
   // Update enquiry status (e.g., mark as Completed)
-  router.patch('/:id', async (req, res) => {
+  router.patch('/:id', authMiddleware, async (req, res) => {
     try {
       const updatedStatus = await Enquiry.findByIdAndUpdate(
         req.params.id,
