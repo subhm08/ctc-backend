@@ -87,8 +87,8 @@ router.post('/verifyOtp', async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.API_KEY, { expiresIn: '7d' });
     res.cookie("token", token,{
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'strict',
       maxAge: 60000 * 60 * 24 * 7
     })
     res.status(200).json({success:true, msg: 'OTP verified', token });
@@ -121,8 +121,8 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({id: user._id}, process.env.API_KEY, { expiresIn: '7d' });
     res.cookie("token", token,{
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'strict',
       maxAge: 60000 * 60 * 24 * 7 
     })
     res.status(200).json({ msg: 'Login successful', token });
