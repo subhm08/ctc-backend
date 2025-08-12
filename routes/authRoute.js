@@ -88,7 +88,7 @@ router.post('/verifyOtp', async (req, res) => {
     res.cookie("token", token,{
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
       maxAge: 60000 * 60 * 24 * 7
     })
     res.status(200).json({success:true, msg: 'OTP verified', token });
@@ -122,7 +122,7 @@ router.post('/login', async (req, res) => {
     res.cookie("token", token,{
       httpOnly: true,
       secure: true,
-      sameSite: 'strict',
+      sameSite: 'none',
       maxAge: 60000 * 60 * 24 * 7 
     })
     res.status(200).json({ msg: 'Login successful', token });
